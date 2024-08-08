@@ -1,5 +1,5 @@
 import React from 'react';
-import OrganizationList from '../components/OrganizationList';
+import OrganizationList from '../components/organizations/OrganizationList';
 
 const OrganizationsPage: React.FC = () => {
   return (

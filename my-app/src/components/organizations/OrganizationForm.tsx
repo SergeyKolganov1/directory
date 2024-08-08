@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { Organization } from '../features/organizations/Organization';
+import { Organization } from '../../features/organizations/Organization';
 import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { addOrganization, updateOrganization } from '../features/organizations/organizationSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addOrganization, updateOrganization, selectOrganizations } from '../../features/organizations/organizationSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
@@ -12,14 +12,26 @@ const validationSchema = yup.object({
   address: yup.string().required('Address is required'),
 });
 
-const OrganizationForm: React.FC<{ initialValues?: Organization }> = ({ initialValues }) => {
-  const isEditMode = !!initialValues;
+const OrganizationForm: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const organizations = useSelector(selectOrganizations);
+  const [initialValues, setInitialValues] = useState<Organization>({ id: '', name: '', address: '' });
+  const isEditMode = !!id;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    if (isEditMode) {
+      const organizationToEdit = organizations.find(org => org.id === id);
+      if (organizationToEdit) {
+        setInitialValues(organizationToEdit);
+      }
+    }
+  }, [id, organizations, isEditMode]);
 
   const formik = useFormik({
-    initialValues: initialValues || { id: '', name: '', address: '' },
+    initialValues,
+    enableReinitialize: true,
     validationSchema,
     onSubmit: (values) => {
       if (isEditMode) {

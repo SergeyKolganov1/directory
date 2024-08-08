@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { Employee } from '../features/employees/Employee';
+import { Employee } from '../../features/employees/Employee';
 import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { addEmployee, updateEmployee } from '../features/employees/employeeSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addEmployee, updateEmployee, selectEmployees } from '../../features/employees/employeeSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
@@ -12,14 +12,26 @@ const validationSchema = yup.object({
   position: yup.string().required('Position is required'),
 });
 
-const EmployeeForm: React.FC<{ initialValues?: Employee }> = ({ initialValues }) => {
-  const isEditMode = !!initialValues;
+const EmployeeForm: React.FC = () => {
+  const { organizationId, employeeId } = useParams<{ organizationId: string, employeeId: string }>();
+  const employees = useSelector(selectEmployees);
+  const [initialValues, setInitialValues] = useState<Employee>({ id: '', organizationId: organizationId!, name: '', position: '' });
+  const isEditMode = !!employeeId;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { organizationId, employeeId } = useParams<{ organizationId: string, employeeId: string }>();
+
+  useEffect(() => {
+    if (isEditMode) {
+      const employeeToEdit = employees.find(emp => emp.id === employeeId);
+      if (employeeToEdit) {
+        setInitialValues(employeeToEdit);
+      }
+    }
+  }, [employeeId, employees, isEditMode]);
 
   const formik = useFormik({
-    initialValues: initialValues || { id: '', organizationId: organizationId!, name: '', position: '' },
+    initialValues,
+    enableReinitialize: true,
     validationSchema,
     onSubmit: (values) => {
       if (isEditMode) {

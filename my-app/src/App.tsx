@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import OrganizationsPage from './pages/OrganizationsPage';
 import EmployeesPage from './pages/EmployeesPage';
-import OrganizationForm from './components/OrganizationForm';
-import EmployeeForm from './components/EmployeeForm';
+import OrganizationForm from './components/organizations/OrganizationForm';
+import EmployeeForm from './components/employees/EmployeeForm';
 
 const App: React.FC = () => {
   return (
