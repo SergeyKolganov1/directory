@@ -31,6 +31,6 @@ const employeeSlice = createSlice({
 
 export const { addEmployee, updateEmployee, deleteEmployee } = employeeSlice.actions;
 export const selectEmployees = (state: RootState) => state.employees.employees;
-export const selectEmployeesByOrganization = (organizationId: string) => (state: RootState) => 
+export const selectEmployeesByOrganization = (organizationId: string) => (state: RootState) =>
   state.employees.employees.filter(emp => emp.organizationId === organizationId);
 export default employeeSlice.reducer;
