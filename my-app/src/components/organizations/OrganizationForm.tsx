@@ -5,19 +5,22 @@ import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addOrganization, updateOrganization, selectOrganizations } from '../../features/organizations/organizationSlice';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
   address: yup.string().required('Address is required'),
 });
 
-const OrganizationForm: React.FC = () => {
+interface OrganizationFormProps {
+  onClose: () => void; // Добавляем функцию для закрытия модального окна
+}
+
+const OrganizationForm: React.FC<OrganizationFormProps> = ({ onClose }) => {
   const { id } = useParams<{ id: string }>();
   const organizations = useSelector(selectOrganizations);
   const [initialValues, setInitialValues] = useState<Organization>({ id: '', name: '', address: '' });
   const isEditMode = !!id;
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,7 +42,7 @@ const OrganizationForm: React.FC = () => {
       } else {
         dispatch(addOrganization({ ...values, id: Date.now().toString() }));
       }
-      navigate('/organizations');
+      onClose();
     },
   });
 

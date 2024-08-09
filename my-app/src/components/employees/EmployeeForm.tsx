@@ -5,19 +5,22 @@ import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addEmployee, updateEmployee, selectEmployees } from '../../features/employees/employeeSlice';
-import { useNavigate, useParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
   position: yup.string().required('Position is required'),
 });
 
-const EmployeeForm: React.FC = () => {
-  const { organizationId, employeeId } = useParams<{ organizationId: string, employeeId: string }>();
+interface EmployeeFormProps {
+  organizationId: string;
+  employeeId?: string | null;
+  onClose: () => void;
+}
+
+const EmployeeForm: React.FC<EmployeeFormProps> = ({ organizationId, employeeId, onClose }) => {
   const employees = useSelector(selectEmployees);
   const [initialValues, setInitialValues] = useState<Employee>({ id: '', organizationId: organizationId!, name: '', position: '' });
   const isEditMode = !!employeeId;
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,7 +42,7 @@ const EmployeeForm: React.FC = () => {
       } else {
         dispatch(addEmployee({ ...values, id: Date.now().toString() }));
       }
-      navigate(`/organizations/${organizationId}`);
+      onClose(); // Закрываем модальное окно после сохранения данных
     },
   });
 

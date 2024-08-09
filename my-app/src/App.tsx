@@ -4,8 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import OrganizationsPage from './pages/OrganizationsPage';
 import EmployeesPage from './pages/EmployeesPage';
-import OrganizationForm from './components/organizations/OrganizationForm';
-import EmployeeForm from './components/employees/EmployeeForm';
+
 
 const App: React.FC = () => {
   return (
@@ -14,10 +13,6 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/organizations" element={<OrganizationsPage />} />
           <Route path="/organizations/:organizationId" element={<EmployeesPage />} />
-          <Route path="/add-organization" element={<OrganizationForm />} />
-          <Route path="/edit-organization/:id" element={<OrganizationForm />} />
-          <Route path="/organizations/:organizationId/add-employee" element={<EmployeeForm />} />
-          <Route path="/organizations/:organizationId/edit-employee/:employeeId" element={<EmployeeForm />} />
           <Route path="/" element={<OrganizationsPage />} />
         </Routes>
       </Router>
