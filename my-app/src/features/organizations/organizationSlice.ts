@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Organization } from './Organization';
-import { RootState } from '../../store';
+import { Organization } from '../../components/organizations/model/Organization';
+import { RootState } from '../../app/store';
 
-interface OrganizationsState {
+export interface OrganizationsState {
   organizations: Organization[];
 }
 

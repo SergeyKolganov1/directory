@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectOrganizations, deleteOrganization } from '../../features/organizations/organizationSlice';
+import { selectOrganizations, deleteOrganization } from '../../../features/organizations/organizationSlice';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';

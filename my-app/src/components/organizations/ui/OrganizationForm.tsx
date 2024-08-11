@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { Organization } from '../../features/organizations/Organization';
+import { Organization } from '../model/Organization';
 import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addOrganization, updateOrganization, selectOrganizations } from '../../features/organizations/organizationSlice';
+import { addOrganization, updateOrganization, selectOrganizations } from '../../../features/organizations/organizationSlice';
 import { useParams } from 'react-router-dom';
 
 const validationSchema = yup.object({
@@ -13,7 +13,7 @@ const validationSchema = yup.object({
 });
 
 interface OrganizationFormProps {
-  onClose: () => void; // Добавляем функцию для закрытия модального окна
+  onClose: () => void;
 }
 
 const OrganizationForm: React.FC<OrganizationFormProps> = ({ onClose }) => {

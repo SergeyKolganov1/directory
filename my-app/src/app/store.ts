@@ -1,8 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import organizationReducer from './features/organizations/organizationSlice';
-import employeeReducer from './features/employees/employeeSlice';
-import { loadState, saveState } from './features/DataService';
-
+import organizationReducer from '../features/organizations/organizationSlice';
+import employeeReducer from '../features/employees/employeeSlice';
+import { loadState, saveState } from '../features/DataService';
 
 export const store = configureStore({
   reducer: {

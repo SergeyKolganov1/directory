@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Employee } from './Employee';
-import { RootState } from '../../store';
+import { Employee } from '../../components/employees/model/Employee';
+import { RootState } from '../../app/store';
 
-interface EmployeesState {
+export interface EmployeesState {
   employees: Employee[];
 }
 
@@ -32,5 +32,5 @@ const employeeSlice = createSlice({
 export const { addEmployee, updateEmployee, deleteEmployee } = employeeSlice.actions;
 export const selectEmployees = (state: RootState) => state.employees.employees;
 export const selectEmployeesByOrganization = (organizationId: string) => (state: RootState) =>
-  state.employees.employees.filter(emp => emp.organizationId === organizationId);
+  state.employees.employees.filter((emp: { organizationId: string; }) => emp.organizationId === organizationId);
 export default employeeSlice.reducer;

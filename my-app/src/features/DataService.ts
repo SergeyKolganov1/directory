@@ -1,32 +1,20 @@
-import { RootState } from '../store';
-import { Employee } from './employees/Employee';
-import { Organization } from './organizations/Organization';
+import { EmployeesState } from './employees/employeeSlice';
+import { OrganizationsState } from './organizations/organizationSlice';
+// import { RootState } from './types';
 
-
-// Тип для корневого состояния
-interface FirstState {
+export interface RootState {
   organizations: OrganizationsState;
   employees: EmployeesState;
 }
 
-// Тип для состояния организаций
-interface OrganizationsState {
-  organizations: Organization[];
-}
-
-// Тип для состояния сотрудников
-interface EmployeesState {
-  employees: Employee[];
-}
-
 // Загрузка данных из localStorage
-export const loadState = (): FirstState | undefined => {
+export const loadState = (): RootState | undefined => {
   try {
     const serializedState = localStorage.getItem('state');
     if (serializedState === null) {
       return undefined;
     }
-    return JSON.parse(serializedState);
+    return JSON.parse(serializedState) as RootState;
   } catch (err) {
     return undefined;
   }

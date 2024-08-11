@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { Employee } from '../../features/employees/Employee';
+import { Employee } from '../model/Employee';
 import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addEmployee, updateEmployee, selectEmployees } from '../../features/employees/employeeSlice';
+import { addEmployee, updateEmployee, selectEmployees } from '../../../features/employees/employeeSlice';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
