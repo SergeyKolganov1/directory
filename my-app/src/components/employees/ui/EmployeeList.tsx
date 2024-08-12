@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectEmployeesByOrganization, deleteEmployee } from '../../../features/employees/employeeSlice';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button, Modal, Box } from '@mui/material';
+import { selectOrganizationById } from '../../../features/organizations/organizationSlice';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button, Modal, Box, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EmployeeForm from './EmployeeForm';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const EmployeeList: React.FC = () => {
   const { organizationId } = useParams<{ organizationId: string }>();
   const employees = useSelector(selectEmployeesByOrganization(organizationId!));
+  const organization = useSelector(selectOrganizationById(organizationId!));
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -29,15 +32,22 @@ const EmployeeList: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Employees</h1>
-      <Button variant="contained" color="primary" onClick={() => handleOpen()}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px', position: 'relative' }}>
+      <Button 
+        variant="contained" 
+        color="error" 
+        onClick={() => navigate('/organizations')} 
+        style={{ position: 'absolute', top: '20px', left: '20px', display: 'flex', alignItems: 'center' }}
+      >
+        <ArrowBackIcon style={{ marginRight: '8px' }} />
+      </Button>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Employees of {organization?.name || 'the Organization'}
+      </Typography>
+      <Button variant="contained" color="primary" onClick={() => handleOpen()} style={{ marginBottom: '20px' }}>
         Add Employee
       </Button>
-      <Button variant="contained" color="secondary" onClick={() => navigate('/organizations')}>
-        Back to Organizations
-      </Button>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ width: '66.67%' }}>
         <Table>
           <TableHead>
             <TableRow>

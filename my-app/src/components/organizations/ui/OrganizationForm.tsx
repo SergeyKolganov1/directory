@@ -3,9 +3,8 @@ import { useFormik } from 'formik';
 import { Organization } from '../model/Organization';
 import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { addOrganization, updateOrganization, selectOrganizations } from '../../../features/organizations/organizationSlice';
-import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addOrganization, updateOrganization } from '../../../features/organizations/organizationSlice';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
@@ -14,23 +13,24 @@ const validationSchema = yup.object({
 
 interface OrganizationFormProps {
   onClose: () => void;
+  initialOrganization?: Organization | null;
 }
 
-const OrganizationForm: React.FC<OrganizationFormProps> = ({ onClose }) => {
-  const { id } = useParams<{ id: string }>();
-  const organizations = useSelector(selectOrganizations);
-  const [initialValues, setInitialValues] = useState<Organization>({ id: '', name: '', address: '' });
-  const isEditMode = !!id;
+const OrganizationForm: React.FC<OrganizationFormProps> = ({ onClose, initialOrganization }) => {
+  const [initialValues, setInitialValues] = useState<Organization>({
+    id: '',
+    name: '',
+    address: '',
+  });
+
+  const isEditMode = !!initialOrganization;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isEditMode) {
-      const organizationToEdit = organizations.find(org => org.id === id);
-      if (organizationToEdit) {
-        setInitialValues(organizationToEdit);
-      }
+    if (initialOrganization) {
+      setInitialValues(initialOrganization);
     }
-  }, [id, organizations, isEditMode]);
+  }, [initialOrganization]);
 
   const formik = useFormik({
     initialValues,
@@ -57,6 +57,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ onClose }) => {
         onChange={formik.handleChange}
         error={formik.touched.name && Boolean(formik.errors.name)}
         helperText={formik.touched.name && formik.errors.name}
+        margin="normal"
       />
       <TextField
         fullWidth
@@ -67,8 +68,9 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ onClose }) => {
         onChange={formik.handleChange}
         error={formik.touched.address && Boolean(formik.errors.address)}
         helperText={formik.touched.address && formik.errors.address}
+        margin="normal"
       />
-      <Button color="primary" variant="contained" fullWidth type="submit">
+      <Button color="primary" variant="contained" fullWidth type="submit" sx={{ marginTop: '16px' }}>
         {isEditMode ? 'Update Organization' : 'Add Organization'}
       </Button>
     </form>

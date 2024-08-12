@@ -29,6 +29,13 @@ const organizationSlice = createSlice({
   },
 });
 
+// Селекторы
 export const { addOrganization, updateOrganization, deleteOrganization } = organizationSlice.actions;
+
 export const selectOrganizations = (state: RootState) => state.organizations.organizations;
+
+// Новый селектор для получения организации по id
+export const selectOrganizationById = (organizationId: string) => (state: RootState) => 
+  state.organizations.organizations.find(org => org.id === organizationId);
+
 export default organizationSlice.reducer;
