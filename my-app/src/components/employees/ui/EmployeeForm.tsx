@@ -42,7 +42,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ organizationId, employeeId,
       } else {
         dispatch(addEmployee({ ...values, id: Date.now().toString() }));
       }
-      onClose(); // Закрываем модальное окно после сохранения данных
+      onClose();
     },
   });
 
