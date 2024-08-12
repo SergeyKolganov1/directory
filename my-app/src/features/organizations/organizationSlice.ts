@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Organization } from './Organization';
-import { RootState } from '../../store';
+import { Organization } from '../../components/organizations/model/Organization';
+import { RootState } from '../../app/store';
 
-interface OrganizationsState {
+export interface OrganizationsState {
   organizations: Organization[];
 }
 
@@ -29,6 +29,9 @@ const organizationSlice = createSlice({
   },
 });
 
+
 export const { addOrganization, updateOrganization, deleteOrganization } = organizationSlice.actions;
 export const selectOrganizations = (state: RootState) => state.organizations.organizations;
+export const selectOrganizationById = (organizationId: string) => (state: RootState) => 
+  state.organizations.organizations.find(org => org.id === organizationId);
 export default organizationSlice.reducer;

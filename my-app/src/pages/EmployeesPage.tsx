@@ -1,5 +1,5 @@
 import React from 'react';
-import EmployeeList from '../components/EmployeeList';
+import EmployeeList from '../components/employees/ui/EmployeeList';
 
 const EmployeesPage: React.FC = () => {
   return (

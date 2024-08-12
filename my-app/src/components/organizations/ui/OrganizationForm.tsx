@@ -1,25 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { Organization } from '../features/organizations/Organization';
+import { Organization } from '../model/Organization';
 import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { addOrganization, updateOrganization } from '../features/organizations/organizationSlice';
-import { useNavigate, useParams } from 'react-router-dom';
+import { addOrganization, updateOrganization } from '../../../features/organizations/organizationSlice';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
   address: yup.string().required('Address is required'),
 });
 
-const OrganizationForm: React.FC<{ initialValues?: Organization }> = ({ initialValues }) => {
-  const isEditMode = !!initialValues;
-  const navigate = useNavigate();
+interface OrganizationFormProps {
+  onClose: () => void;
+  initialOrganization?: Organization | null;
+}
+
+const OrganizationForm: React.FC<OrganizationFormProps> = ({ onClose, initialOrganization }) => {
+  const [initialValues, setInitialValues] = useState<Organization>({
+    id: '',
+    name: '',
+    address: '',
+  });
+
+  const isEditMode = !!initialOrganization;
   const dispatch = useDispatch();
-  const { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    if (initialOrganization) {
+      setInitialValues(initialOrganization);
+    }
+  }, [initialOrganization]);
 
   const formik = useFormik({
-    initialValues: initialValues || { id: '', name: '', address: '' },
+    initialValues,
+    enableReinitialize: true,
     validationSchema,
     onSubmit: (values) => {
       if (isEditMode) {
@@ -27,7 +42,7 @@ const OrganizationForm: React.FC<{ initialValues?: Organization }> = ({ initialV
       } else {
         dispatch(addOrganization({ ...values, id: Date.now().toString() }));
       }
-      navigate('/organizations');
+      onClose();
     },
   });
 
@@ -42,6 +57,7 @@ const OrganizationForm: React.FC<{ initialValues?: Organization }> = ({ initialV
         onChange={formik.handleChange}
         error={formik.touched.name && Boolean(formik.errors.name)}
         helperText={formik.touched.name && formik.errors.name}
+        margin="normal"
       />
       <TextField
         fullWidth
@@ -52,8 +68,9 @@ const OrganizationForm: React.FC<{ initialValues?: Organization }> = ({ initialV
         onChange={formik.handleChange}
         error={formik.touched.address && Boolean(formik.errors.address)}
         helperText={formik.touched.address && formik.errors.address}
+        margin="normal"
       />
-      <Button color="primary" variant="contained" fullWidth type="submit">
+      <Button color="primary" variant="contained" fullWidth type="submit" sx={{ marginTop: '16px' }}>
         {isEditMode ? 'Update Organization' : 'Add Organization'}
       </Button>
     </form>
